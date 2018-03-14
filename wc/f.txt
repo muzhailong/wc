@@ -1,0 +1,16 @@
+f.txt,字符数:0
+f.txt,单数:0
+f.txt,行数:0
+f.txt,代码行/空行/注释行:0/0/0
+out.txt,字符数:38
+out.txt,单数:4
+out.txt,行数:3
+out.txt,代码行/空行/注释行:3/0/0
+result.txt,字符数:48
+result.txt,单数:5
+result.txt,行数:4
+result.txt,代码行/空行/注释行:4/0/0
+stop.txt,字符数:13
+stop.txt,单数:1
+stop.txt,行数:4
+stop.txt,代码行/空行/注释行:4/0/0

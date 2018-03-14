@@ -5,21 +5,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
+import com.util.Utils;
 
 public class WordCount {
 	private static WordCount wc = new WordCount();
-	private static final String[] mark = 
-			new String[] { "-c", "-w", "-l", "-o","-a","-s","-e"};
 
 	public static WordCount newInstance() {
 		return wc;
 	}
 
-	public int e(File f) {
+	public int c(File f) {
 		if (!f.exists())
 			return -1;
 		BufferedReader reader = null;
@@ -45,7 +45,7 @@ public class WordCount {
 		return res;
 	}
 
-	public int w(File f) {
+	public int w(File f, Set<String> set) {
 		if (!f.exists())
 			return -1;
 		int res = 0;
@@ -60,8 +60,14 @@ public class WordCount {
 			String[] arr = sb.toString().split(" |,");
 
 			for (String temp : arr) {
-				if (temp != null && !temp.equals("")) {
-					++res;
+				if (set == null) {
+					if (temp != null && !temp.equals("")) {
+						++res;
+					}
+				} else {
+					if (temp != null && !temp.equals("") && !set.contains(temp)) {
+						++res;
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -77,6 +83,10 @@ public class WordCount {
 			}
 		}
 		return res;
+	}
+
+	public int w(File f) {
+		return w(f, null);
 	}
 
 	public int l(File f) {
@@ -104,58 +114,92 @@ public class WordCount {
 		return res;
 	}
 
-	public List<File>s(File f){
-		List<File> list=new LinkedList<File>();
-		s(f,list);
+	public List<File> s(File f) {
+		List<File> list = new LinkedList<File>();
+		s(f, list);
 		return list;
 	}
-	
+
 	public void s(File dir, List<File> list) {
 		if (!dir.exists())
 			return;
-		
+
 		if (dir.isFile()) {
 			list.add(dir);
 			return;
 		}
-		File[] fileArr=dir.listFiles();
-		
-		for(File tmp:fileArr) {
-			if(tmp.isDirectory()) {
-				s(tmp,list);
-			}else if(tmp.isFile()) {
+		File[] fileArr = dir.listFiles();
+
+		for (File tmp : fileArr) {
+			if (tmp.isDirectory()) {
+				s(tmp, list);
+			} else if (tmp.isFile()) {
 				list.add(tmp);
 			}
 		}
 	}
-	
-	
-	private static class Block{
+
+	public List<File> s(File f, String pattern, boolean deep) {
+		List<File> list = new LinkedList<File>();
+		if (deep) {
+			s(f, list, pattern);
+		} else {
+			for (File temp : f.listFiles()) {
+				if (temp.isFile() && Utils.match(pattern, temp.getName())) {
+					list.add(temp);
+				}
+			}
+		}
+		return list;
+	}
+
+	private void s(File dir, List<File> list, String pattern) {
+		if (dir == null)
+			return;
+
+		if (dir.isFile()) {
+			if (Utils.match(pattern, dir.getName()))
+				;
+			{
+				list.add(dir);
+			}
+			return;
+		}
+		for (File temp : dir.listFiles()) {
+			if (temp.isFile() && Utils.match(pattern, temp.getName())) {
+				list.add(temp);
+			} else if (temp.isDirectory()) {
+				s(temp, list, pattern);
+			}
+		}
+	}
+
+	private static class Block {
 		int codeLine;
 		int emptyLine;
 		int noteLine;
-		
-		public Block(int codeLine,int emptyLine,int noteLine) {
-			this.codeLine=codeLine;
-			this.emptyLine=emptyLine;
-			this.noteLine=noteLine;
+
+		public Block(int codeLine, int emptyLine, int noteLine) {
+			this.codeLine = codeLine;
+			this.emptyLine = emptyLine;
+			this.noteLine = noteLine;
 		}
 	}
-	
+
 	public Block a(File f) {
-		int codeLine=0,emptyLine=0,noteLine=0;
-		BufferedReader reader=null;
+		int codeLine = 0, emptyLine = 0, noteLine = 0;
+		BufferedReader reader = null;
 		try {
-			reader=new BufferedReader(new FileReader(f));
-			String s=null;
-			while((s=reader.readLine())!=null) {
-				s=s.trim();
-				if(s.length()==0) {
+			reader = new BufferedReader(new FileReader(f));
+			String s = null;
+			while ((s = reader.readLine()) != null) {
+				s = s.trim();
+				if (s.length() == 0) {
 					++emptyLine;
-				}else {
-					if(s.startsWith("//")) {
+				} else {
+					if (s.startsWith("//")) {
 						++noteLine;
-					}else {
+					} else {
 						++codeLine;
 					}
 				}
@@ -164,49 +208,92 @@ public class WordCount {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				reader.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		return new Block(codeLine,emptyLine,noteLine);
+
+		return new Block(codeLine, emptyLine, noteLine);
 	}
 
-	public void execute(String[] args, File f) {
-		List<String> arr = Arrays.asList(args);
-		int t = arr.indexOf(mark[3]);
-		PrintWriter writer = null;
-		if (t == -1) {
-			writer = new PrintWriter(System.out);
-		} else {
+	public Set<String> e(File f) {
+		Set<String> set = new HashSet<String>();
+		BufferedReader reader = null;
+		if (!f.exists())
+			return set;
+		try {
+			reader = new BufferedReader(new FileReader(f));
+
+			String s = null;
+			while ((s = reader.readLine()) != null) {
+				set.add(s);
+			}
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally {
 			try {
-				writer = new PrintWriter(args[t + 1]);
-			} catch (FileNotFoundException e) {
+				reader.close();
+			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
 		}
-		StringBuilder res = new StringBuilder();
-
-		if (arr.contains(mark[0])) {
-			int ec = e(f);
-			res.append(f.getName() + "," + "字符数:" + ec + "\n");
-		}
-
-		if (arr.contains(mark[1])) {
-			int wc = w(f);
-			res.append(f.getName() + "," + "单词数:" + wc + "\n");
-		}
-
-		if (arr.contains(mark[2])) {
-			int lc = l(f);
-			res.append(f.getName() + "," + "行数:" + lc + "\n");
-		}
-		writer.write(res.toString());
-		writer.close();
+		return set;
 	}
 
+	public void execute(Parameter p) {
+		StringBuilder res = new StringBuilder();
+		for (File f : p.src) {
+			res.append(run(f, p));
+		}
+		p.writer.write(res.toString());
+		p.writer.flush();
+	}
+
+	private String run(File f, Parameter p) {
+		StringBuilder sb = new StringBuilder();
+		if (p.action[0]) {
+			sb.append(cw(f.getName(), c(f)));
+		}
+
+		if (p.action[1]) {
+			if(!p.action[6]) {
+				sb.append(ww(f.getName(), w(f)));
+			}else {
+				sb.append(ww(f.getName(), w(f,e(p.stopFile))));
+			}
+		}
+
+		if (p.action[2]) {
+			sb.append(lw(f.getName(), l(f)));
+		}
+
+		if (p.action[4]) {
+			sb.append(aw(f.getName(), a(f)));
+		}
+		return sb.toString();
+	}
+
+	private static String cw(String name, int num) {
+		return name + "," + "字符数:" + num + "\n";
+	}
+
+	private static String ww(String name, int num) {
+		return name + "," + "单数:" + num + "\n";
+	}
+
+	private static String lw(String name, int num) {
+		return name + "," + "行数:" + num + "\n";
+	}
+
+	private String aw(String name, Block b) {
+		return name + "," + "代码行/空行/注释行:" + b.codeLine + "/" + b.emptyLine + "/" + b.noteLine + "\n";
+	}
 }
