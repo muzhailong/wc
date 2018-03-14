@@ -11,7 +11,6 @@ public class StartUp {
 		File f=new File("1.c");
 		System.out.println(wc.e(f));
 		System.out.println(wc.w(f));
-		
-		
+		System.out.println(wc.l(f));
 	}
 }
