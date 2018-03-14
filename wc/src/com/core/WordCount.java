@@ -1,13 +1,18 @@
 package com.core;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 
 public class WordCount {
 	private static WordCount wc = new WordCount();
+	private static final String[] mark = new String[] { "-c", "-w", "-l", "-o" };
 
 	public static WordCount newInstance() {
 		return wc;
@@ -28,7 +33,7 @@ public class WordCount {
 			e2.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				reader.close();
 			} catch (IOException e1) {
@@ -62,7 +67,7 @@ public class WordCount {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				reader.close();
 			} catch (IOException e) {
@@ -77,7 +82,7 @@ public class WordCount {
 		if (!f.exists())
 			return -1;
 		BufferedReader reader = null;
-		int res=0;
+		int res = 0;
 		try {
 			reader = new BufferedReader(new FileReader(f));
 			while (reader.readLine() != null) {
@@ -87,7 +92,7 @@ public class WordCount {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				reader.close();
 			} catch (IOException e) {
@@ -97,4 +102,40 @@ public class WordCount {
 		}
 		return res;
 	}
+
+	public void execute(String[] args,File f) {
+		
+		List<String> arr = Arrays.asList(args);
+		int t = arr.indexOf(mark[3]);
+		PrintWriter writer = null;
+		if(t==-1) {
+			writer=new PrintWriter(System.out);
+		}else {
+			try {
+				writer=new PrintWriter(args[t+1]);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		StringBuilder res=new StringBuilder();
+		
+		if(arr.contains(mark[0])) {
+			int ec=e(f);
+			res.append(f.getName()+","+"字符数:"+ec+"\n");
+		}
+		
+		if(arr.contains(mark[1])) {
+			int wc=w(f);
+			res.append(f.getName()+","+"单词数:"+wc+"\n");
+		}
+		
+		if(arr.contains(mark[2])) {
+			int lc=l(f);
+			res.append(f.getName()+","+"行数:"+lc+"\n");
+		}
+		writer.write(res.toString());
+		writer.close();
+	}
+	
 }
