@@ -27,7 +27,7 @@ public class Parameter {
 		this.args = args;
 	}
 
-	public void setIn(File f) {
+	private void setIn(File f) {
 		if (f != null) {
 			srcFile = f;
 		} else {
@@ -37,13 +37,19 @@ public class Parameter {
 			for (int i = 1; i < args.length; ++i) {
 				if (!set.contains(args[i])) {
 					temp = args[i];
+					if (!temp.contains("*")) {
+						srcFile = new File(temp);
+					} else {
+						tp = true;
+						fn = temp;
+					}
 					break;
 				}
 			}
 		}
 	}
 
-	public void setOut(Writer w) {
+	private void setOut(Writer w) {
 		if (w != null) {
 			writer = new PrintWriter(w);
 		} else {
@@ -71,22 +77,39 @@ public class Parameter {
 		}
 	}
 
-	public void parse(File in, Writer out) {
+	private void setStop(File f) {
+		if (f != null) {
+			stopFile = f;
+		} else {
+			List<String> list = Arrays.asList(args);
+			if (list.indexOf(mark[6]) != -1) {
+				stopFile = new File(list.get(list.indexOf(mark[6]) + 1));
+				action[6] = true;
+			}
+		}
+	}
+
+	public void parse(File in, Writer out, File stopFile) {
 		Arrays.fill(action, false);
 		List<String> list = Arrays.asList(args);
 
 		setIn(in);
 		setOut(out);
+		setStop(stopFile);
 
 		if (list.contains(mark[5])) {
-			src = WordCount.newInstance().s(srcFile.getParentFile(), srcFile.getName(), true);
-		} else {
-			src.add(srcFile);
-		}
+			if (!tp) {
+				src = WordCount.newInstance().s(srcFile.getParentFile(), srcFile.getName(), true);
+			} else {
+				src = WordCount.newInstance().s(new File("./"), fn, true);
+			}
 
-		if (list.indexOf(mark[6]) != -1) {
-			stopFile = new File(list.get(list.indexOf(mark[6]) + 1));
-			action[6] = true;
+		} else {
+			if (!tp) {
+				src.add(srcFile);
+			} else {
+				src = WordCount.newInstance().s(new File("./"), fn, false);
+			}
 		}
 
 		Set<String> st = new HashSet<String>();
