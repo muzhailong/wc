@@ -1,4 +1,0 @@
-while
-if
-then
-ok
