@@ -98,13 +98,17 @@ public class View extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource().equals(exeBtn)) {
 			String fp = text.getText();
-			Parameter p = new Parameter("wc.exe -c -w -l -a -e".split(" "));
+			
 			StringWriter writer = new StringWriter();
 			String st=text2.getText();
 			File sf=null;
 			
+			Parameter p = null;
 			if(st!=null&&!st.equals("")) {
 				sf=new File(st);
+				p=new Parameter("wc.exe -c -w -l -a -e".split(" "));
+			}else {
+				p=new Parameter("wc.exe -c -w -l -a".split(" "));
 			}
 			
 			p.parse(new File(fp), writer, sf);

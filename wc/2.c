@@ -1,0 +1,16 @@
+1.txt,字符数:110
+1.txt,单词数:13
+1.txt,行数:9
+1.txt,代码行/空行/注释行:8/0/1
+result.txt,字符数:34
+result.txt,单词数:6
+result.txt,行数:3
+result.txt,代码行/空行/注释行:3/0/0
+stop.txt,字符数:27
+stop.txt,单词数:0
+stop.txt,行数:7
+stop.txt,代码行/空行/注释行:7/0/0
+1.txt,字符数:107
+1.txt,单词数:12
+1.txt,行数:10
+1.txt,代码行/空行/注释行:9/1/0
