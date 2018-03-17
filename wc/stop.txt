@@ -1,4 +1,7 @@
+int
+printf
+a
 while
-if
-then
-ok
+true
+false
+len

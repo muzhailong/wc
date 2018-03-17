@@ -99,16 +99,17 @@ public class Parameter {
 
 		if (list.contains(mark[5])) {
 			if (!tp) {
-				src = WordCount.newInstance().s(srcFile.getParentFile(), srcFile.getName(), true);
+				File t=srcFile.getAbsoluteFile().getParentFile();
+				src = WordCount.newInstance().s(t, srcFile.getName(), true);
 			} else {
-				src = WordCount.newInstance().s(new File("./"), fn, true);
+				src = WordCount.newInstance().s(new File("./").getAbsoluteFile(), fn, true);
 			}
 
 		} else {
 			if (!tp) {
 				src.add(srcFile);
 			} else {
-				src = WordCount.newInstance().s(new File("./"), fn, false);
+				src = WordCount.newInstance().s(new File("./").getAbsoluteFile(), fn, false);
 			}
 		}
 

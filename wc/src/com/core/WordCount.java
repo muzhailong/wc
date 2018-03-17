@@ -49,24 +49,23 @@ public class WordCount {
 		if (!f.exists())
 			return -1;
 		int res = 0;
+		
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(f));
-			StringBuilder sb = new StringBuilder();
 			String s = null;
 			while ((s = reader.readLine()) != null) {
-				sb.append(s);
-			}
-			String[] arr = sb.toString().split(" |,");
-
-			for (String temp : arr) {
-				if (set == null) {
-					if (temp != null && !temp.equals("")) {
-						++res;
-					}
-				} else {
-					if (temp != null && !temp.equals("") && !set.contains(temp)) {
-						++res;
+				String[] arr = s.split(" |,");
+				for (String temp : arr) {
+					temp=temp.trim();
+					if (set == null) {
+						if (temp != null && !temp.equals("")) {
+							++res;
+						}
+					} else {
+						if (temp != null && !temp.equals("") && !set.contains(temp)) {
+							++res;
+						}
 					}
 				}
 			}
@@ -286,7 +285,7 @@ public class WordCount {
 	}
 
 	private static String ww(String name, int num) {
-		return name + "," + "单数:" + num + "\n";
+		return name + "," + "单词数:" + num + "\n";
 	}
 
 	private static String lw(String name, int num) {
