@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -225,11 +226,12 @@ public class WordCount {
 			return set;
 		try {
 			reader = new BufferedReader(new FileReader(f));
-
+			StringBuilder sb=new StringBuilder();
 			String s = null;
 			while ((s = reader.readLine()) != null) {
-				set.add(s);
+				sb.append(s);
 			}
+			set.addAll(Arrays.asList(sb.toString().split(" ")));
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

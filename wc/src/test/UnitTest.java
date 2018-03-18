@@ -64,7 +64,15 @@ public class UnitTest {
 		StartUp.start(args);
 	}
 	
+	public static void testE2() {
+		String[]args="wc.exe -w 1.txt -e stop.txt".split(" ");
+		StartUp.start(args);
+	}
 	
+	public static void testPath() {
+		String[]args="wc.exe -w D:\\project\\homework\\wc\\wc\\wc\\*.txt -e stop.txt".split(" ");
+		StartUp.start(args);
+	}
 	
 	
 	
@@ -81,5 +89,7 @@ public class UnitTest {
 //		UnitTest.testE();
 //		UnitTest.testP();
 		UnitTest.testX();
+//		UnitTest.testE2();
+//		UnitTest.testPath();
 	}
 }

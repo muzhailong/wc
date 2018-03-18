@@ -3,8 +3,10 @@ package com.ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.StringWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,7 +14,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.core.Parameter;
@@ -23,13 +24,11 @@ public class View extends JFrame implements ActionListener {
 	JPanel panel1;
 	JPanel panel2;
 	JPanel panel3;
-	JPanel panel4;
 	JFileChooser jfc = new JFileChooser();// 文件选择器
 	JFileChooser jfc2 = new JFileChooser();// 文件选择器
 	JButton btn1 = new JButton("选择");
 	JButton btn2 = new JButton("选择");
 	JButton exeBtn = new JButton("执行");
-	JTextArea area = new JTextArea(10, 25);
 	JTextField text = new JTextField(15);
 	JTextField text2 = new JTextField(15);
 	JPanel main = new JPanel();
@@ -49,22 +48,17 @@ public class View extends JFrame implements ActionListener {
 
 		panel2 = new JPanel();
 		panel2.setLayout(p);
-		panel2.add(new JLabel("停用词语文件"));
+		panel2.add(new JLabel("输出文件"));
 		panel2.add(text2);
 		panel2.add(btn2);
 
 		panel3 = new JPanel();
 		panel3.setLayout(p);
 		panel3.add(exeBtn);
-		
-		panel4 = new JPanel();
-		panel4.setLayout(p);
-		panel4.add(area);
 
 		main.add(panel1);
 		main.add(panel2);
 		main.add(panel3);
-		main.add(panel4);
 
 		jfc.setCurrentDirectory(new File("c:\\"));
 		btn1.addActionListener(this);
@@ -98,23 +92,21 @@ public class View extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource().equals(exeBtn)) {
 			String fp = text.getText();
-			
-			StringWriter writer = new StringWriter();
-			String st=text2.getText();
-			File sf=null;
-			
-			Parameter p = null;
-			if(st!=null&&!st.equals("")) {
-				sf=new File(st);
-				p=new Parameter("wc.exe -c -w -l -a -e".split(" "));
-			}else {
-				p=new Parameter("wc.exe -c -w -l -a".split(" "));
+			String st = text2.getText();
+			File in = new File(fp);
+			BufferedWriter writer;
+			try {
+				writer = new BufferedWriter(new FileWriter(st));
+				String cmd = "wc.exe -c -l - w -a";
+				Parameter p = new Parameter(cmd.split(" "));
+				p.parse(in, writer, null);
+				WordCount.newInstance().execute(p);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}finally {
+				System.exit(0);
 			}
-			
-			p.parse(new File(fp), writer, sf);
-			WordCount.newInstance().execute(p);
-			String s = writer.toString();
-			area.setText(s);
 		}
 	}
 }

@@ -1,7 +1,1 @@
-int
-printf
-a
-while
-true
-false
-len
+out = file else void
