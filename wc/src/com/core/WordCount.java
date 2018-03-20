@@ -14,13 +14,13 @@ import java.util.Set;
 import com.util.Utils;
 
 public class WordCount {
-	private static WordCount wc = new WordCount();
+	private static WordCount wc = new WordCount();//单例模式
 
 	public static WordCount newInstance() {
 		return wc;
 	}
 
-	public int c(File f) {
+	public int c(File f) {//字符记数
 		if (!f.exists())
 			return -1;
 		BufferedReader reader = null;
@@ -46,7 +46,7 @@ public class WordCount {
 		return res;
 	}
 
-	public int w(File f, Set<String> set) {
+	public int w(File f, Set<String> set) {//单词记数
 		if (!f.exists())
 			return -1;
 		int res = 0;
@@ -85,11 +85,11 @@ public class WordCount {
 		return res;
 	}
 
-	public int w(File f) {
+	public int w(File f) {//单词记数重载 无停用词表
 		return w(f, null);
 	}
 
-	public int l(File f) {
+	public int l(File f) {//行数记数
 		if (!f.exists())
 			return -1;
 		BufferedReader reader = null;
@@ -114,13 +114,13 @@ public class WordCount {
 		return res;
 	}
 
-	public List<File> s(File f) {
+	public List<File> s(File f) {//递归获取文件
 		List<File> list = new LinkedList<File>();
 		s(f, list);
 		return list;
 	}
 
-	public void s(File dir, List<File> list) {
+	private void s(File dir, List<File> list) {//递归获取文件 具体实现
 		if (!dir.exists())
 			return;
 
@@ -139,7 +139,7 @@ public class WordCount {
 		}
 	}
 
-	public List<File> s(File f, String pattern, boolean deep) {
+	public List<File> s(File f, String pattern, boolean deep) {//深度递归
 		List<File> list = new LinkedList<File>();
 		if (deep) {
 			s(f, list, pattern);
@@ -153,7 +153,7 @@ public class WordCount {
 		return list;
 	}
 
-	private void s(File dir, List<File> list, String pattern) {
+	private void s(File dir, List<File> list, String pattern) {//根据具体的模式判断
 		if (dir == null)
 			return;
 
@@ -174,7 +174,7 @@ public class WordCount {
 		}
 	}
 
-	private static class Block {
+	private static class Block {//-a参数的存储结构
 		int codeLine;
 		int emptyLine;
 		int noteLine;
@@ -186,7 +186,7 @@ public class WordCount {
 		}
 	}
 
-	public Block a(File f) {
+	public Block a(File f) {// -a的具体实现
 		int codeLine = 0, emptyLine = 0, noteLine = 0;
 		BufferedReader reader = null;
 		try {
@@ -219,7 +219,7 @@ public class WordCount {
 		return new Block(codeLine, emptyLine, noteLine);
 	}
 
-	public Set<String> e(File f) {
+	public Set<String> e(File f) {//获取停用词
 		Set<String> set = new HashSet<String>();
 		BufferedReader reader = null;
 		if (!f.exists())
@@ -249,7 +249,7 @@ public class WordCount {
 		return set;
 	}
 
-	public void execute(Parameter p) {
+	public void execute(Parameter p) {//根据参数解析的结果 执行
 		StringBuilder res = new StringBuilder();
 		for (File f : p.src) {
 			res.append(run(f, p));
@@ -282,6 +282,8 @@ public class WordCount {
 		return sb.toString();
 	}
 
+	
+	//辅助方法
 	private static String cw(String name, int num) {
 		return name + "," + "字符数:" + num + "\n";
 	}

@@ -4,6 +4,7 @@ public class Utils {
 
 	private Utils() {}
 	
+	//辅助方法 实现通配符的匹配
 	public static boolean match(String p,String t) {
 		int len1=p.length();
 		int len2=t.length();
@@ -15,7 +16,11 @@ public class Utils {
 			dp[i][0]=dp[i-1][0]&&pc=='*';
 			for(int j=1;j<=len2;++j) {
 				char tc=t.charAt(j-1);
-				dp[i][j]=(dp[i-1][j-1]&&pc==tc||pc=='*');
+				if(pc=='*') {
+					dp[i][j]=dp[i-1][j]||dp[i][j-1];
+				}else {
+					dp[i][j]=dp[i-1][j-1]&&pc==tc;
+				}
 			}
 		}
 		return dp[len1][len2];
