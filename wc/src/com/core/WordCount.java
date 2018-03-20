@@ -21,7 +21,7 @@ public class WordCount {
 	}
 
 	public int c(File f) {//字符记数
-		if (!f.exists())
+		if (f==null||!f.exists())
 			return -1;
 		BufferedReader reader = null;
 		int res = 0;
@@ -47,7 +47,7 @@ public class WordCount {
 	}
 
 	public int w(File f, Set<String> set) {//单词记数
-		if (!f.exists())
+		if (f==null||!f.exists())
 			return -1;
 		int res = 0;
 		
@@ -90,7 +90,7 @@ public class WordCount {
 	}
 
 	public int l(File f) {//行数记数
-		if (!f.exists())
+		if (f==null||!f.exists())
 			return -1;
 		BufferedReader reader = null;
 		int res = 0;
@@ -189,6 +189,7 @@ public class WordCount {
 	public Block a(File f) {// -a的具体实现
 		int codeLine = 0, emptyLine = 0, noteLine = 0;
 		BufferedReader reader = null;
+		if(f==null||!f.exists()) return null;
 		try {
 			reader = new BufferedReader(new FileReader(f));
 			String s = null;
