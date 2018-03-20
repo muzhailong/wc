@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import com.core.Parameter;
 import com.core.WordCount;
 
+//界面
 public class View extends JFrame implements ActionListener {
 	JButton open = null;
 	JPanel panel1;
@@ -33,7 +34,7 @@ public class View extends JFrame implements ActionListener {
 	JTextField text2 = new JTextField(15);
 	JPanel main = new JPanel();
 
-	public View() {
+	public View() {//设置界面ui
 		BoxLayout bl = new BoxLayout(main, BoxLayout.Y_AXIS);
 		main.setLayout(bl);
 		this.add(main);
@@ -71,8 +72,8 @@ public class View extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btn1)) {
+	public void actionPerformed(ActionEvent e) {//事件处理
+		if (e.getSource().equals(btn1)) {//选择源文件
 			jfc.setFileSelectionMode(0);
 			int state = jfc.showOpenDialog(null);
 			if (state == 1) {
@@ -81,7 +82,7 @@ public class View extends JFrame implements ActionListener {
 				File f = jfc.getSelectedFile();
 				text.setText(f.getAbsolutePath());
 			}
-		} else if (e.getSource().equals(btn2)) {
+		} else if (e.getSource().equals(btn2)) {//选择输出文件
 			jfc2.setFileSelectionMode(0);
 			int state = jfc2.showOpenDialog(null);
 			if (state == 1) {
@@ -90,7 +91,7 @@ public class View extends JFrame implements ActionListener {
 				File f = jfc2.getSelectedFile();
 				text2.setText(f.getAbsolutePath());
 			}
-		} else if (e.getSource().equals(exeBtn)) {
+		} else if (e.getSource().equals(exeBtn)) {//执行
 			String fp = text.getText();
 			String st = text2.getText();
 			File in = new File(fp);

@@ -5,54 +5,49 @@ import com.StartUp;
 public class UnitTest {
 	
 	
-	//测试字符数，单词数
+	//测试字符数
 	public static  void testC() {
 		String[] args="wc.exe -c 1.txt".split(" ");
 		StartUp.start(args);
 	}
 	
-	//测试单词数目
+	//测试字符数、单词数目
 	public static void testW() {
-		String[]args="wc.exe -w 1.txt".split(" ");
+		String[]args="wc.exe -c -w 1.txt".split(" ");
 		StartUp.start(args);
 	}
 	
-	//测试行数
+	//测试字符数、单词数目、行数
 	public static void testL() {
-		String[]args="wc.exe -l 1.txt".split(" ");
+		String[]args="wc.exe -c -w -l 1.txt".split(" ");
 		StartUp.start(args);
 	}
-	//测试输出文件
+	//测试字符数、单词数目、行数、输出文件
 	public static void testO() {
-		String[]args="wc.exe -l 1.txt -o 2.c".split(" ");
-		StartUp.start(args);
-	}
-	//基本功能联合测试
-	public static void testCWLO() {
-		String[]args="wc.exe -l -c -w 1.txt -o 2.c".split(" ");
+		String[]args="wc.exe -c -w -l 1.txt -o 2.c".split(" ");
 		StartUp.start(args);
 	}
 	
-	//测试处理目录下符合文件
+	//测试字符数、单词数目、行数、输出文件、递归文件夹
 	public static void testS() {
-		String[]args="wc.exe -l -c -w -s 1.txt -o 2.c".split(" ");
+		String[]args="wc.exe -c -w -l -s 1.txt -o 2.c".split(" ");
 		StartUp.start(args);
 	}
 	
-	//测试返回复杂的数据
+	//测试字符数、单词数目、行数、输出文件、递归文件夹、复杂结构
 	public static void testA() {
 		String[]args="wc.exe -l -c -w -s -a 1.txt -o 2.c".split(" ");
 		StartUp.start(args);
 	}
 	
-	//测试停用词表
+	//测试停用词表//测试字符数、单词数目、行数、输出文件、递归文件夹、复杂结构、停用词表
 	public static void testE() {
 		String[]args="wc.exe -l -c -w -s -a 1.txt -o 2.c -e stop.txt".split(" ");
 		StartUp.start(args);
 	}
 	
 	//高级功能测试
-	//通配符测试
+	//测试停用词表//测试字符数、单词数目、行数、输出文件、递归文件夹、复杂结构、停用词表、通配符
 	public static void testP() {
 		String[]args="wc.exe -l -c -w -s -a *.txt -o 2.c -e stop.txt".split(" ");
 		StartUp.start(args);
@@ -70,7 +65,7 @@ public class UnitTest {
 	}
 	
 	public static void testPath() {
-		String[]args="wc.exe -w D:\\project\\homework\\wc\\wc\\wc\\*.txt -e stop.txt".split(" ");
+		String[]args="wc.exe -c -l -w D:\\project\\homework\\wc\\wc\\wc\\*.txt -e stop.txt -o 2.txt".split(" ");
 		StartUp.start(args);
 	}
 	
